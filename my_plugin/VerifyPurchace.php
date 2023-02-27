@@ -1,3 +1,4 @@
+<?php
 class VerifyPurchace {
   private $purchase_api_url = 'https://example.com/verify-purchase.php';
 
@@ -41,3 +42,4 @@ class VerifyPurchace {
     return $http_status === 200;
   }
 }
+?>
