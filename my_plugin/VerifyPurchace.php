@@ -1,5 +1,4 @@
-<?php
-class My_Plugin {
+class VerifyPurchace {
   private $api_endpoint = 'https://example.com/verify-purchase.php';
 
   public function verify_purchase($purchase_code) {
@@ -15,6 +14,28 @@ class My_Plugin {
       return new WP_Error('verification_error', $data['error']);
     }
 
-    return $data;
+    $license_types = array(
+      'regular' => 'Regular License',
+      'extended' => 'Extended License',
+      'elements' => 'Envato Elements',
+    );
+    $license_type = isset($license_types[$data['license_type']]) ? $license_types[$data['license_type']] : $data['license_type'];
+
+    $supported_until = $data['supported_until'] !== 'Not supported' ? date('F j, Y', strtotime($data['supported_until'])) : 'Not supported';
+
+    $output = array(
+      'item_name' => $data['item_name'],
+      'item_url' => $data['item_url'],
+      'purchase_date' => $data['purchase_date'],
+      'license_type' => $license_type,
+      'supported_until' => $supported_until,
+      'buyer_username' => $data['buyer_username'],
+      'buyer_email' => $data['buyer_email'],
+      'buyer_country' => $data['buyer_country'],
+      'buyer_city' => $data['buyer_city'],
+      'buyer_state' => $data['buyer_state'],
+    );
+
+    return $output;
   }
 }
